@@ -84,3 +84,28 @@ record; it is not claimed here.
 
 **Prepared by:** Allen Mack — AI Infinity Force One
 **Contact:** a95674127@gmail.com
+
+---
+
+### Post-Release-1 verification note (November 10, 2026)
+
+On November 10, 2026, the STIX 2.1 hardening that previously existed only as a
+local, uncommitted change was committed to the source repository as commit
+`6995e05efc61d5795aa2c2f20d5ecc511223161c` (one file: `src/detection/stix.rs`,
++144/−27 lines — deterministic STIX object IDs, spec-correct typing, and two
+new tests). Its automated checks then ran in the open on that commit:
+
+- **CI run #329 — SUCCESS**, all four jobs (test, Dependency Audit, Test
+  Coverage, ledger-demo). Test suite: **228 passed / 0 failed** across all test
+  binaries — the 226 of the signed record plus the hardening's two new STIX
+  tests.
+- **Fuzzing run #58 — SUCCESS.**
+- **Lint run #20 and Secret Scan run #73 — FAILED, both for pre-existing
+  causes unrelated to this change**, documented before this commit: the
+  committed `Cargo.lock` lacks the `rsa` entry required by an earlier
+  dependency pin (one-line fix prepared, not yet applied), and the scanner's
+  generic-api-key rule flags the public key printed in
+  `attestation/SIGNING.md` (a false positive; an allowlist fix is prepared,
+  not yet applied). Neither run is quoted as green anywhere in this record.
+
+**The signed Release 1 record (226 tests, commit `d60e82d`) is unchanged; owner attestation for this change (Release 2) is pending.**
